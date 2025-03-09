@@ -4,7 +4,6 @@ local system, properties, linkedCannons, scanner, rayCaster, group, MONSTERLIST
 local linkedgoggles = {}
 local modList = {"HMS", "POINT", "SHIP", "PLAYER", "MONSTER", "MOBS"}
 local protocol, missile_protocol, request_protocol = "CBCNetWork", "CBCMissileNetWork", "CBCcenter"
-
 local tm_monitors = {
     list = {}
 }
