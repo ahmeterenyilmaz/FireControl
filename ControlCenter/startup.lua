@@ -1,5 +1,5 @@
 local goggle_link_port = peripheral.find("goggle_link_port")
-
+os.loadAPI("coordinate")
 local system, properties, linkedCannons, scanner, rayCaster, group, MONSTERLIST
 local linkedgoggles = {}
 local modList = {"HMS", "POINT", "SHIP", "PLAYER", "MONSTER", "MOBS"}
