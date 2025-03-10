@@ -441,7 +441,12 @@ function scanner:getPlayer(range)
 end
 
 function scanner:getMobs(scope)
-    self.mobs = coordinate.getMobs(scope)
+    -- coordinate modülü kontrol ediliyor
+    if not coordinate then
+        return {}
+    end
+
+    self.mobs = coordinate.getMobs(scope) or {}
 
     for k, v in pairs(self.preMobs) do
         v.flag = false
