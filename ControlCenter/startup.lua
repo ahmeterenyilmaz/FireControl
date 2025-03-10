@@ -1,5 +1,9 @@
-local goggle_link_port = peripheral.find("goggle_link_port")
+local coordinate = peripheral.find("coordinate_detector") -- veya doğru peripheral adı
+if not coordinate then
+    error("Coordinate detector peripheral bulunamadı!")
+end
 local system, properties, linkedCannons, scanner, rayCaster, group, MONSTERLIST
+local goggle_link_port = peripheral.find("goggle_link_port")
 local linkedgoggles = {}
 local modList = {"HMS", "POINT", "SHIP", "PLAYER", "MONSTER", "MOBS"}
 local protocol, missile_protocol, request_protocol = "CBCNetWork", "CBCMissileNetWork", "CBCcenter"
@@ -441,20 +445,24 @@ function scanner:getPlayer(range)
 end
 
 function scanner:getMobs(scope)
-    -- coordinate modülü kontrol ediliyor
     if not coordinate then
         return {}
     end
 
-    self.mobs = coordinate.getMobs(scope) or {}
+    -- Güvenli çağrı
+    local success, result = pcall(function()
+        return coordinate.getMobs(scope) or {}
+    end)
+
+    self.mobs = success and result or {}
 
     for k, v in pairs(self.preMobs) do
         v.flag = false
     end
 
     scanner.monsters = {}
-    if scanner.mobs ~= nil then
-        for k, v in pairs(scanner.mobs) do
+    if self.mobs ~= nil then
+        for k, v in pairs(self.mobs) do
             if scanner.preMobs[k] then
                 v.velocity = {
                     x = v.x - scanner.preMobs[v.uuid].x,
@@ -471,12 +479,6 @@ function scanner:getMobs(scope)
 
             v.flag = true
             scanner.preMobs[v.uuid] = v
-        end
-    end
-
-    for k, v in pairs(self.preMobs) do
-        if not v.flag then
-            self.preMobs[k] = nil
         end
     end
 
